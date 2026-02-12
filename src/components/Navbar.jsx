@@ -17,16 +17,13 @@ export default function Navbar() {
 
   return (
     <nav className="bg-gray-800 fixed top-0 left-0 w-full z-50 shadow-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Fixed "items-center" typo below */}
+      <div className="max-w-10xl mx-auto px-8 sm:px-8 lg:px-8">
         <div className="flex items-center justify-between h-16">
           
-          {/* Left: Logo - Wrapped in NavLink so it's clickable! */}
           <NavLink to="/" className="flex-shrink-0">
             <img src={logo} alt="Logo" className="h-10 w-auto" />
           </NavLink>
 
-          {/* Center: Menu */}
           <div className="hidden md:flex space-x-4">
             {menuItems.map((item) => (
               <NavLink
@@ -41,7 +38,6 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Right: Logout */}
           <div className="flex items-center">
             <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200">
               Logout

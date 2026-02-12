@@ -13,7 +13,7 @@ function App() {
       <Navbar />
       <main className="pt-20"> 
         <Routes>
-          <Route path="/dashboard" element={<Dashboard />} /> 
+          <Route path="/" element={<Dashboard />} /> 
           <Route path="/latin" element={<Latin />} />
           <Route path="/saber" element={<Saber />} />
           <Route path="/awards" element={<Awards />} />
