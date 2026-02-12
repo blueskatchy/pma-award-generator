@@ -1,83 +1,49 @@
 import { NavLink } from "react-router-dom";
-import logo from "../assets/logo.png"; // change if needed
+import logo from "../assets/logo_navbar.png"; 
 
-function Navbar() {
-  const linkStyle =
-    "px-4 py-2 text-sm font-medium transition duration-200";
+export default function Navbar() {
+  const linkClass = "px-4 py-2 text-sm font-medium transition duration-200";
+  const activeClass = "text-yellow-400 border-b-2 border-yellow-400";
+  const inactiveClass = "text-white hover:text-yellow-300";
 
-  const activeStyle = "text-yellow-400 border-b-2 border-yellow-400";
-  const inactiveStyle = "text-white hover:text-yellow-300";
+  const menuItems = [
+    { name: "Home", path: "/" },
+    { name: "Latin", path: "/latin" },
+    { name: "Saber", path: "/saber" },
+    { name: "Awards", path: "/awards" },
+    { name: "Plaque", path: "/plaque" },
+    { name: "Streamer", path: "/streamer" },
+  ];
 
   return (
-    <nav className="bg-[#1f1f1f] shadow-md">
-      <div className="max-w-7xl mx-auto px-4">
+    <nav className="bg-gray-800 fixed top-0 left-0 w-full z-50 shadow-md">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Fixed "items-center" typo below */}
         <div className="flex items-center justify-between h-16">
           
-          {/* Left - Logo */}
-          <div className="flex items-center space-x-3">
+          {/* Left: Logo - Wrapped in NavLink so it's clickable! */}
+          <NavLink to="/" className="flex-shrink-0">
             <img src={logo} alt="Logo" className="h-10 w-auto" />
+          </NavLink>
+
+          {/* Center: Menu */}
+          <div className="hidden md:flex space-x-4">
+            {menuItems.map((item) => (
+              <NavLink
+                key={item.name}
+                to={item.path}
+                className={({ isActive }) =>
+                  `${linkClass} ${isActive ? activeClass : inactiveClass}`
+                }
+              >
+                {item.name}
+              </NavLink>
+            ))}
           </div>
 
-          {/* Center - Links */}
-          <div className="flex space-x-6">
-            <NavLink
-              to="/"
-              className={({ isActive }) =>
-                `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-              }
-            >
-              Home
-            </NavLink>
-
-            <NavLink
-              to="/latin"
-              className={({ isActive }) =>
-                `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-              }
-            >
-              Latin
-            </NavLink>
-
-            <NavLink
-              to="/saber"
-              className={({ isActive }) =>
-                `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-              }
-            >
-              Saber
-            </NavLink>
-
-            <NavLink
-              to="/awards"
-              className={({ isActive }) =>
-                `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-              }
-            >
-              Awards
-            </NavLink>
-
-            <NavLink
-              to="/plaque"
-              className={({ isActive }) =>
-                `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-              }
-            >
-              Plaque
-            </NavLink>
-
-            <NavLink
-              to="/streamer"
-              className={({ isActive }) =>
-                `${linkStyle} ${isActive ? activeStyle : inactiveStyle}`
-              }
-            >
-              Streamer Group Award
-            </NavLink>
-          </div>
-
-          {/* Right - Logout */}
-          <div>
-            <button className="text-white hover:text-red-400 transition">
+          {/* Right: Logout */}
+          <div className="flex items-center">
+            <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200">
               Logout
             </button>
           </div>
@@ -86,5 +52,3 @@ function Navbar() {
     </nav>
   );
 }
-
-export default Navbar;
