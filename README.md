@@ -21,3 +21,9 @@ A web-based awards management system for the Philippine Military Academy.
 - **Icons:** Lucide React
 - **Authentication:** JWT (JSON Web Tokens)
 
+## Installation
+
+1. Clone the repository
+```bash
+git clone <your-repo-url>
+cd pma-awards-system
