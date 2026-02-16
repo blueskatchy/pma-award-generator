@@ -4,11 +4,35 @@ import TableLayout from "../components/TableLayout";
 const Awards = () => {
   const sections = [
     {
-      title: "PRESIDENTIAL SABER",
+      title: "DISTNGUISHED CADET (STARMAN)",
       data: [],
     },
     {
-      title: "VICE PRESIDENTIAL SABER",
+      title: "AGFO, INC",
+      data: [],
+    },
+    {
+      title: "GEN. ANTONIO LUNA",
+      data: [],
+    },
+     {
+      title: "JUSMAG",
+      data: [],
+    },
+     {
+      title: "JOURNALISM",
+      data: [],
+    },
+     {
+      title: "SPANISH ARMRED FORCES",
+      data: [],
+    },
+     {
+      title: "ACADEMIC GROUP AWARD",
+      data: [],
+    },
+     {
+      title: "TACTICS GROUP AWARD",
       data: [],
     },
   ];
