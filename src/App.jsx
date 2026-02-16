@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
 import Navbar from "./components/Navbar"; 
 import Dashboard from "./pages/Dashboard"; 
 import Latin from "./pages/Latin";
@@ -14,7 +14,7 @@ function MainLayout() {
       <Navbar />
       <main className="pt-20">
         <Outlet /> 
-      </main>
+      </main> 
     </>
   );
 }
