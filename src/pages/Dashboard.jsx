@@ -17,12 +17,6 @@ export default function Dashboard() {
     { title: "Streamer", value: "3" },
   ];
 
-  const chartTitles = [
-    "ALPHA",
-    "BRAVO",
-    "CHARLIE",
-    "DELTA",
-  ];
 
   return (
     <div className="bg-surface p-7 w-full text-gray-600">
