@@ -6,9 +6,10 @@ const TableSection = ({ title, data }) => {
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-bold">{title}</h2>
 
-        <button className="btn btn-sm btn-neutral">
-          See More
-        </button>
+        <button className="bg-black text-white text-xs px-4 py-1 rounded-md hover:bg-gray-800 transition duration-200">
+  See More
+</button>
+
       </div>
 
       <div className="overflow-x-auto">
