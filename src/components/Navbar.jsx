@@ -37,12 +37,16 @@ export default function Navbar() {
               </NavLink>
             ))}
           </div>
+         <div className="flex items-center gap-4">
+  <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200">
+    Import CSV
+  </button>
 
-          <div className="flex items-center">
-            <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200">
-              Logout
-            </button>
-          </div>
+  <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200">
+    Logout
+  </button>
+</div>
+
         </div>
       </div>
     </nav>
