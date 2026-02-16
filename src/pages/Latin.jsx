@@ -1,0 +1,37 @@
+import React from "react";
+import LatinTable from "../components/LatinTable";
+
+const Latin = () => {
+  const cumLaude = [
+    { rank: 1, name: "Juan Dela Cruz", grade: 90 },
+    { rank: 2, name: "Maria Santos", grade: 89 },
+  ];
+
+  const magnaCumLaude = [
+    { rank: 1, name: "Jose Reyes", grade: 94 },
+    { rank: 2, name: "Ana Garcia", grade: 93 },
+  ];
+
+  const summaCumLaude = [
+    { rank: 1, name: "Mark Villanueva", grade: 98 },
+    { rank: 2, name: "Claire Mendoza", grade: 97 },
+  ];
+
+  return (
+    <div className="bg-surface p-7 md:p-16 w-full min-h-screen">
+      <div className="mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
+          Latin Honors
+        </h1>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <LatinTable title="CUM LAUDE" data={cumLaude} />
+        <LatinTable title="MAGNA CUM LAUDE" data={magnaCumLaude} />
+        <LatinTable title="SUMMA CUM LAUDE" data={summaCumLaude} />
+      </div>
+    </div>
+  );
+};
+
+export default Latin;
