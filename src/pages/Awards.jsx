@@ -1,13 +1,24 @@
-function Awards() {
-  return(
-    <div className="bg-surface p-7 md:p- mt-0 w-full overflow-y-auto custom-scrollbar">
-            <div className="flex justify-between items-center mb-4 md:mb-6 text-gray-600">
-                <h1 className="text-2xl md:text-3xl font-bold text-primary">
-                    Awards  
-                </h1>
-            </div>
-        </div>
-  )
-}
+import React from "react";
+import TableLayout from "../components/TableLayout";
+
+const Awards = () => {
+  const sections = [
+    {
+      title: "PRESIDENTIAL SABER",
+      data: [],
+    },
+    {
+      title: "VICE PRESIDENTIAL SABER",
+      data: [],
+    },
+  ];
+
+  return (
+    <TableLayout
+      pageTitle="Awards"
+      sections={sections}
+    />
+  );
+};
 
 export default Awards;
