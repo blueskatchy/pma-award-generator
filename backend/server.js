@@ -3,15 +3,13 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 
-const app = express(); // ✅ create app FIRST
+const app = express();
 
-const importCSV = require("./importcsvAPI"); // make sure filename matches exactly
+// Import CSV routes
+const importCSV = require("./importcsvAPI");
 
 app.use(cors());
 app.use(express.json());
-
-// API route
-app.use("/api", importCSV);
 
 // Connect to MySQL
 const db = mysql.createConnection({
@@ -26,8 +24,15 @@ db.connect((err) => {
     console.error("Database connection failed:", err);
   } else {
     console.log("✅ Connected to MySQL!");
+    console.log("📊 Database: pma_sample");
   }
 });
+
+// Make db available to routes
+app.locals.db = db;
+
+// API route
+app.use("/api", importCSV);
 
 // Test endpoint
 app.get("/", (req, res) => {
@@ -35,6 +40,7 @@ app.get("/", (req, res) => {
 });
 
 // Start server
-app.listen(3001, () => {
-  console.log("Server running on port 3001");
+const PORT = 3001;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
