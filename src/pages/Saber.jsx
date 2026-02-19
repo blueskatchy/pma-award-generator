@@ -48,6 +48,7 @@ const Saber = () => {
   return (
     <TableLayout
       pageTitle="Saber Awards"
+            pageName="saber"
       sections={sections}
     />
   );

@@ -40,6 +40,7 @@ const Awards = () => {
   return (
     <TableLayout
       pageTitle="Awards"
+            pageName="awards"
       sections={sections}
     />
   );

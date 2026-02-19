@@ -1,25 +1,30 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const TableSection = ({ title, data }) => {
+const TableSection = ({ title, data = [], showButton = false }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="card bg-base-100 shadow-md p-8 rounded-xl">
-      
-      {/* HEADER */}
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-lg md:text-xl font-semibold tracking-wide">
+    <div className="bg-white rounded-lg shadow-md p-4">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-xl font-bold tracking-wide text-gray-800">
           {title}
         </h2>
-
-        <button className="bg-black text-white text-xs px-5 py-2 rounded-lg hover:bg-gray-800 transition">
-          See More
-        </button>
+        {showButton && (
+          <button
+            onClick={() => navigate(`/${title.toLowerCase().replace(/\s+/g, '-')}/all`)}
+            className="px-3 py-1.5 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-xs font-medium"
+          >
+            See More
+          </button>
+        )}
       </div>
 
       {/* TABLE */}
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>
-            <tr className="text-gray-500">
+            <tr className="text-gray-500 text-base">
               <th className="text-center w-1/4">Rank</th>
               <th className="text-center w-2/4">Name</th>
               <th className="text-center w-1/4">Grade</th>
@@ -39,7 +44,7 @@ const TableSection = ({ title, data }) => {
               ))
             ) : (
               <tr>
-                <td colSpan="3" className="text-center py-8 text-gray-400">
+                <td colSpan={3} className="text-center py-8 text-gray-400">
                   No data available
                 </td>
               </tr>

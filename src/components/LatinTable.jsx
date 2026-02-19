@@ -3,7 +3,7 @@ import React from "react";
 const LatinTable = ({ title, data }) => {
   return (
     <div className="card bg-base-100 shadow-xl p-8">
-      <h2 className="text-2xl font-bold text-center mb-8 tracking-wide">
+      <h2 className="text-xl font-bold text-center mb-8 tracking-wide">
         {title}
       </h2>
 

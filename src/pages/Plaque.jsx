@@ -60,6 +60,7 @@ const Plaque = () => {
   return (
     <TableLayout
       pageTitle="Plaque Awards"
+            pageName="plaque"
       sections={sections}
     />
   );
