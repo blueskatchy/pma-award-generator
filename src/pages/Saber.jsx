@@ -31,16 +31,16 @@ const Saber = () => {
       title: "PHILIPPINE AIR FORCE SABER",
       data: [],
     },
+        {
+      title: "ATHLETIC SABER",
+      data: [],
+    },
     {
       title: "CHIEF JUSTICE SABER",
       data: [],
     },
     {
       title: "AGUINALDO SABER",
-      data: [],
-    },
-    {
-      title: "ATHLETIC SABER",
       data: [],
     },
   ];
