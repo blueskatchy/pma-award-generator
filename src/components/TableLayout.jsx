@@ -36,7 +36,7 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
   };
 
   return (
-    <div className="bg-surface p-7 md:p-16 w-full min-h-screen">
+       <div className="bg-surface p-7 md:p-16 w-full min-h-screen page-transition">
 
       <div className="mb-6">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-700">

@@ -2,8 +2,8 @@ import React from "react";
 
 const LatinTable = ({ title, data }) => {
   return (
-    <div className="card bg-base-100 shadow-xl p-8">
-      <h2 className="text-xl font-bold text-center mb-8 tracking-wide">
+    <div className="card bg-base-100 shadow-xl p-8 page-transition">
+      <h2 className="text-xl font-bold text-center mb-8 tracking-wide text-gray-700">
         {title}
       </h2>
 

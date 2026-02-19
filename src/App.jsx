@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Outlet, useLocation } from "react-router-dom";
+import { useEffect } from "react";
 import Navbar from "./components/Navbar"; 
 import Dashboard from "./pages/Dashboard"; 
 import Latin from "./pages/Latin";
@@ -7,11 +8,22 @@ import Awards from "./pages/Awards";
 import Plaque from "./pages/Plaque";
 import Streamer from "./pages/Streamer";
 import Login from "./pages/Login";
-import SectionPage from "./pages/SectionPage"; 
+
+// Create a scroll to top component
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function MainLayout() {
   return (
     <>
+      <ScrollToTop />
       <Navbar />
       <main className="pt-20">
         <Outlet /> 
@@ -40,6 +52,5 @@ function App() {
     </Router>
   );
 }
-
 
 export default App;
