@@ -7,6 +7,7 @@ import Awards from "./pages/Awards";
 import Plaque from "./pages/Plaque";
 import Streamer from "./pages/Streamer";
 import Login from "./pages/Login";
+import SectionPage from "./pages/SectionPage"; 
 
 function MainLayout() {
   return (
@@ -23,6 +24,7 @@ function App() {
   return (
     <Router>
       <Routes>
+
         <Route element={<MainLayout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/latin" element={<Latin />} />
@@ -31,11 +33,13 @@ function App() {
           <Route path="/plaque" element={<Plaque />} />
           <Route path="/streamer" element={<Streamer />} />
         </Route>
-        
+
         <Route path="/login" element={<Login />} />
+
       </Routes>
     </Router>
   );
 }
+
 
 export default App;

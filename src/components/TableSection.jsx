@@ -1,8 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const TableSection = ({ title, data = [], showButton = false }) => {
+const TableSection = ({ title, data = [], showButton = false, onSeeMore }) => {
   const navigate = useNavigate();
+
+  const handleSeeMoreClick = (e) => {
+    e.stopPropagation();
+    
+    if (onSeeMore) {
+      onSeeMore(title, data);
+    } else {
+      navigate(`/${title.toLowerCase().replace(/\s+/g, "-")}/all`);
+    }
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
@@ -12,7 +22,7 @@ const TableSection = ({ title, data = [], showButton = false }) => {
         </h2>
         {showButton && (
           <button
-            onClick={() => navigate(`/${title.toLowerCase().replace(/\s+/g, '-')}/all`)}
+            onClick={handleSeeMoreClick}
             className="px-3 py-1.5 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-xs font-medium"
           >
             See More
@@ -20,7 +30,6 @@ const TableSection = ({ title, data = [], showButton = false }) => {
         )}
       </div>
 
-      {/* TABLE */}
       <div className="overflow-x-auto">
         <table className="table w-full">
           <thead>
