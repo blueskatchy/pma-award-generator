@@ -3,16 +3,22 @@ const express = require("express");
 const mysql = require("mysql2");
 const cors = require("cors");
 
-const app = express();
+const app = express(); // ✅ create app FIRST
+
+const importCSV = require("./importcsvAPI"); // make sure filename matches exactly
+
 app.use(cors());
 app.use(express.json());
+
+// API route
+app.use("/api", importCSV);
 
 // Connect to MySQL
 const db = mysql.createConnection({
   host: "localhost",
-  user: "root",             // your MySQL username
-  password: "",             // your MySQL password
-  database: "test" // replace with your DB name
+  user: "root",
+  password: "",
+  database: "pma_sample"
 });
 
 db.connect((err) => {
@@ -25,10 +31,7 @@ db.connect((err) => {
 
 // Test endpoint
 app.get("/", (req, res) => {
-  db.query("SELECT 1 + 1 AS test", (err, result) => {
-    if (err) return res.json(err);
-    res.json(result);
-  });
+  res.json({ message: "Server running" });
 });
 
 // Start server
