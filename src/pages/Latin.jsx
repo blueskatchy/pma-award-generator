@@ -1,21 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import LatinTable from "../components/LatinTable";
 
 const Latin = () => {
-  const cumLaude = [
-    { rank: 1, name: "Juan Dela Cruz", grade: 90 },
-    { rank: 2, name: "Maria Santos", grade: 89 },
-  ];
+  const [cumLaude, setCumLaude] = useState([]);
+  const [magnaCumLaude, setMagnaCumLaude] = useState([]);
+  const [summaCumLaude, setSummaCumLaude] = useState([]);
 
-  const magnaCumLaude = [
-    { rank: 1, name: "Jose Reyes", grade: 94 },
-    { rank: 2, name: "Ana Garcia", grade: 93 },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:3001/api/Latin")
+      .then((res) => res.json())
+      .then((data) => {
+        // Add ranking automatically based on CGPA (highest first)
 
-  const summaCumLaude = [
-    { rank: 1, name: "Mark Villanueva", grade: 98 },
-    { rank: 2, name: "Claire Mendoza", grade: 97 },
-  ];
+        const addRank = (arr) =>
+          arr
+            .sort((a, b) => b.cgpa - a.cgpa)
+            .map((student, index) => ({
+              rank: index + 1,
+              name: student.name,
+              grade: student.cgpa.toFixed(3),
+            }));
+
+        setSummaCumLaude(addRank(data.summaCumLaude || []));
+        setMagnaCumLaude(addRank(data.magnaCumLaude || []));
+        setCumLaude(addRank(data.cumLaude || []));
+      })
+      .catch((error) => {
+        console.error("Error fetching Latin honors:", error);
+      });
+  }, []);
 
   return (
     <div className="bg-surface p-7 md:p-16 w-full min-h-screen">
