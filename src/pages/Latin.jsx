@@ -43,7 +43,19 @@ const Latin = () => {
 
   return (
     <div className="bg-surface p-7 md:p-16 w-full min-h-screen">
-      <h1 className="text-2xl md:text-3xl font-bold text-gray-700">Latin Honors</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
+          Latin Honors
+        </h1>
+        
+        <button
+          onClick={handleExportPDF}
+          className="text-gray-600 hover:text-gray-900 underline font-semibold transition"
+        >
+          Export PDF
+        </button>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <LatinTable title="CUM LAUDE" data={cumLaude} />
         <LatinTable title="MAGNA CUM LAUDE" data={magnaCumLaude} />
