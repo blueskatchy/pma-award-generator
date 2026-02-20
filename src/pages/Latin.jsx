@@ -27,14 +27,23 @@ const Latin = () => {
       .catch(error => console.error("Error fetching Latin honors:", error));
   }, []);
 
+  const handleExportPDF = () => {
+    const sections = [
+      { title: "CUM LAUDE", data: cumLaude },
+      { title: "MAGNA CUM LAUDE", data: magnaCumLaude },
+      { title: "SUMMA CUM LAUDE", data: summaCumLaude },
+    ];
+
+    exportOfficialPDF({
+      pageTitle: "Latin Honors",
+      sections,
+      fileName: "latin-honors",
+    });
+  };
+
   return (
     <div className="bg-surface p-7 md:p-16 w-full min-h-screen">
-      <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
-          Latin Honors
-        </h1>
-      </div>
-
+      <h1 className="text-2xl md:text-3xl font-bold text-gray-700">Latin Honors</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <LatinTable title="CUM LAUDE" data={cumLaude} />
         <LatinTable title="MAGNA CUM LAUDE" data={magnaCumLaude} />
