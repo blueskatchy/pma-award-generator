@@ -1,25 +1,17 @@
+// LatinAPI.js
 const express = require("express");
-const mysql = require("mysql2");
 const router = express.Router();
-
-const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "pma_sample"
-});
+const db = require("./db");
 
 router.get("/latin-honors", (req, res) => {
   const query = `
-    SELECT 
-      afpsn,
-      lname,
-      fname,
+    SELECT afpsn, lname, fname,
       SUM(crsegrade * cunits) / NULLIF(SUM(cunits),0) AS cgpa,
       MIN(crsegrade) AS min_grade
     FROM sample
-    GROUP BY afpsn
+    GROUP BY afpsn, lname, fname
   `;
+
   db.query(query, (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
 
@@ -29,8 +21,8 @@ router.get("/latin-honors", (req, res) => {
 
     results.forEach(student => {
       const cgpa = parseFloat(student.cgpa);
-      const minGrade = student.min_grade;
-      if (!cgpa) return;
+      const minGrade = parseFloat(student.min_grade);
+      if (!cgpa || isNaN(cgpa)) return;
 
       const studentData = {
         afpsn: student.afpsn,
@@ -38,9 +30,9 @@ router.get("/latin-honors", (req, res) => {
         cgpa: parseFloat(cgpa.toFixed(3))
       };
 
-      if (cgpa >= 9.300 && minGrade >= 8.500) summa.push(studentData);
-      else if (cgpa >= 8.900 && minGrade >= 8.250) magna.push(studentData);
-      else if (cgpa >= 8.500 && minGrade >= 8.000) cum.push(studentData);
+      if (cgpa >= 9.3 && minGrade >= 8.5) summa.push(studentData);
+      else if (cgpa >= 8.9 && minGrade >= 8.25) magna.push(studentData);
+      else if (cgpa >= 8.5 && minGrade >= 8.0) cum.push(studentData);
     });
 
     res.json({
@@ -51,4 +43,4 @@ router.get("/latin-honors", (req, res) => {
   });
 });
 
-module.exports = router; // ✅ must export router
+module.exports = router;
