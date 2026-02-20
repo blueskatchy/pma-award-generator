@@ -17,7 +17,7 @@ const exportOfficialPDF = ({
 
   let yPosition = 60;
 
-  // ===== HEADER FUNCTION (Reusable per page) =====
+  // ===== HEADER FUNCTION =====
   const drawHeader = () => {
     doc.addImage(logo, "PNG", leftMargin, 15, 22, 22);
 
@@ -56,6 +56,7 @@ const exportOfficialPDF = ({
     doc.text(section.title, leftMargin, yPosition);
     yPosition += 6;
 
+    // ===== AUTO TABLE WITH PROPER ALIGNMENT =====
     autoTable(doc, {
       startY: yPosition,
       head: [["Rank", "Name", "Grade"]],
@@ -68,13 +69,24 @@ const exportOfficialPDF = ({
       styles: {
         fontSize: 9,
         cellPadding: 3,
+        cellWidth: 'auto',
       },
       headStyles: {
-        fillColor: [0, 51, 102],
+        fillColor: [80, 80, 80],
         textColor: 255,
+        halign: 'center',
+        fontStyle: 'bold',
+      },
+      columnStyles: {
+        0: { halign: 'center', cellWidth: 25 }, // Rank column - centered
+        1: { halign: 'center', cellWidth: 'auto' }, // Name column - left aligned
+        2: { halign: 'center', cellWidth: 25 }, // Grade column - centered
+      },
+      alternateRowStyles: {
+        fillColor: [245, 245, 245],
       },
       margin: { left: leftMargin, right: leftMargin },
-
+      
       didDrawPage: () => {
         const pageCount = doc.getNumberOfPages();
 
