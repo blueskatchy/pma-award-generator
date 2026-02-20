@@ -116,7 +116,7 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
                             {item.name}
                           </td>
                           <td className="text-center py-4">
-                            <span className="px-3 py-1 bg-gray-100 rounded-full text-sm">
+                            <span className="px-3 py-1 rounded-full text-sm">
                               {item.grade}
                             </span>
                           </td>
