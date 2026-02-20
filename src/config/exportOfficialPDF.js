@@ -17,7 +17,6 @@ const exportOfficialPDF = ({
 
   let yPosition = 60;
 
-  // ===== HEADER FUNCTION =====
   const drawHeader = () => {
     doc.addImage(logo, "PNG", leftMargin, 15, 22, 22);
 
@@ -56,7 +55,6 @@ const exportOfficialPDF = ({
     doc.text(section.title, leftMargin, yPosition);
     yPosition += 6;
 
-    // ===== AUTO TABLE WITH PROPER ALIGNMENT =====
     autoTable(doc, {
       startY: yPosition,
       head: [["Rank", "Name", "Grade"]],
@@ -78,9 +76,9 @@ const exportOfficialPDF = ({
         fontStyle: 'bold',
       },
       columnStyles: {
-        0: { halign: 'center', cellWidth: 25 }, // Rank column - centered
-        1: { halign: 'center', cellWidth: 'auto' }, // Name column - left aligned
-        2: { halign: 'center', cellWidth: 25 }, // Grade column - centered
+        0: { halign: 'center', cellWidth: 25 }, 
+        1: { halign: 'center', cellWidth: 'auto' },
+        2: { halign: 'center', cellWidth: 25 }, 
       },
       alternateRowStyles: {
         fillColor: [245, 245, 245],
