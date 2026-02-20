@@ -40,13 +40,26 @@ const exportOfficialPDF = ({
     yPosition = 60;
   };
 
+  const drawPageNumber = (pageNum, totalPages) => {
+    doc.setFontSize(9);
+    doc.setTextColor(120, 120, 120);
+    doc.text(
+      `Page ${pageNum} of ${totalPages}`,
+      pageWidth / 2,
+      pageHeight - 10,
+      { align: "center" }
+    );
+  };
+
   drawHeader();
+  let pageNumber = 1;
 
   sections.forEach((section) => {
     if (!section.data || section.data.length === 0) return;
 
     if (yPosition > pageHeight - 30) {
       doc.addPage();
+      pageNumber++;
       drawHeader();
     }
 
@@ -85,13 +98,13 @@ const exportOfficialPDF = ({
       },
       margin: { left: leftMargin, right: leftMargin },
       
-      didDrawPage: () => {
-        const pageCount = doc.getNumberOfPages();
-
+      didDrawPage: (data) => {
         doc.setFontSize(9);
         doc.setTextColor(120, 120, 120);
+        
+        const totalPages = doc.getNumberOfPages();
         doc.text(
-          `Page ${doc.internal.getCurrentPageInfo().pageNumber} of ${pageCount}`,
+          `Page ${data.pageNumber} of ${totalPages}`,
           pageWidth / 2,
           pageHeight - 10,
           { align: "center" }
@@ -101,6 +114,23 @@ const exportOfficialPDF = ({
 
     yPosition = doc.lastAutoTable.finalY + 12;
   });
+
+  const totalPages = doc.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    
+    doc.setFillColor(255, 255, 255);
+    doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
+    
+    doc.setFontSize(9);
+    doc.setTextColor(120, 120, 120);
+    doc.text(
+      `Page ${i} of ${totalPages}`,
+      pageWidth / 2,
+      pageHeight - 10,
+      { align: "center" }
+    );
+  }
 
   doc.save(`${fileName}.pdf`);
 };
