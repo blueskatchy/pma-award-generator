@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TableSection from "./TableSection";
 import { tablesWithButtons } from "../config/tableButtons";
+import exportOfficialPDF from "../config/exportOfficialPDF";
 
 const TableLayout = ({ pageTitle, sections, pageName }) => {
   const [selectedSection, setSelectedSection] = useState(null);
@@ -35,14 +36,29 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
     setShowAllModal(null);
   };
 
+  const handleExportPDF = () => {
+  exportOfficialPDF({
+    pageTitle,
+    sections,
+    fileName: pageName,
+  });
+};
+
   return (
        <div className="bg-surface p-7 md:p-16 w-full min-h-screen page-transition">
 
-      <div className="mb-6">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
-          {pageTitle}
-        </h1>
-      </div>
+      <div className="flex justify-between items-center mb-6">
+  <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
+    {pageTitle}
+  </h1>
+
+<button
+  onClick={handleExportPDF}
+  className="text-gray-600 hover:text-gray-900 underline font-semibold transition"
+>
+  Export PDF
+</button>
+</div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {sections.map((section, index) => (
