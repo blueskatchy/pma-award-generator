@@ -4,10 +4,6 @@ import TableLayout from "../components/TableLayout";
 const Streamer = () => {
   const sections = [
     {
-      title: "TACTICS GROUP AWARD",
-      data: [],
-    },
-    {
       title: "SUP'S CUP",
       data: [],
     },

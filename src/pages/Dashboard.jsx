@@ -17,21 +17,18 @@ export default function Dashboard() {
     { title: "Streamer", value: "3" },
   ];
 
-
   return (
-    <div className="bg-surface p-7 w-full text-gray-600">
+    <div className="bg-surface p-7 md:p-16 w-full min-h-screen text-gray-600 page-transition">
 
-      {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-primary">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
           Welcome back!
         </h1>
-        <span className="text-primary text-lg">
+        <span className="text-gray-700 text-lg">
           {currentDate}
         </span>
       </div>
 
-      {/* Metrics */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
         {metrics.map((item, index) => (
           <MetricCard key={index} {...item} />

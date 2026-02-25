@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 
-/* Metric Card */
 export function MetricCard({ title, value }) {
   return (
     <div className="bg-white border-b-4 border-primary rounded-lg shadow-md p-5 hover:shadow-lg transition duration-300">
@@ -13,7 +12,6 @@ export function MetricCard({ title, value }) {
   );
 }
 
-/* Chart Card */
 export function ChartCard({ title }) {
   const chartRef = useRef(null);
 
