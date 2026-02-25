@@ -1,9 +1,9 @@
-// server.js
 const express = require("express");
 const cors = require("cors");
 
 const importCSV = require("./importcsvAPI");
 const latinAPI = require("./LatinAPI");
+const SaberAPI = require("./SaberAPI");
 
 const app = express();
 
@@ -12,7 +12,8 @@ app.use(express.json());
 
 app.use("/api", importCSV);
 app.use("/api", latinAPI);
+app.use("/api", SaberAPI); 
 
 app.get("/", (req, res) => res.json({ message: "Server running" }));
 
-app.listen(3001, () => console.log("🚀 Server running on port 3001"));
+app.listen(3001, () => console.log("Server running on port 3001"));
