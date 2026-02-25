@@ -1,16 +1,22 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useRef } from "react";
-import logo from "../assets/logo_navbar.png"; 
+import logo from "../assets/logo_navbar.png";
 
 export default function Navbar() {
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
-  const linkClass = "px-4 py-2 text-sm font-medium transition duration-200";
-  const activeClass = "text-yellow-400 border-b-2 border-yellow-400";
-  const inactiveClass = "text-white hover:text-yellow-300";
+  const linkClass =
+    "px-4 py-2 text-sm font-medium transition duration-200";
+
+  const activeClass =
+    "text-yellow-400 border-b-2 border-yellow-400";
+
+  const inactiveClass =
+    "text-white hover:text-yellow-300";
 
   const menuItems = [
-    { name: "Home", path: "/" },
+    { name: "Home", path: "/" }, // ✅ FIXED
     { name: "Latin", path: "/latin" },
     { name: "Saber", path: "/saber" },
     { name: "Awards", path: "/awards" },
@@ -30,10 +36,13 @@ export default function Navbar() {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:3001/api/import-csv", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "http://localhost:3001/api/import-csv",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       const data = await response.json();
       alert(data.message || "Import successful!");
@@ -43,22 +52,35 @@ export default function Navbar() {
     }
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/login", { replace: true });
+  };
+
   return (
     <nav className="bg-gray-800 fixed top-0 left-0 w-full z-50 shadow-md">
-      <div className="max-w-10xl mx-auto px-8 sm:px-8 lg:px-8">
+      <div className="max-w-10xl mx-auto px-8">
         <div className="flex items-center justify-between h-16">
 
+          {/* LOGO */}
           <NavLink to="/" className="flex-shrink-0">
-            <img src={logo} alt="Logo" className="h-10 w-auto" />
+            <img
+              src={logo}
+              alt="Logo"
+              className="h-10 w-auto"
+            />
           </NavLink>
 
+          {/* MENU */}
           <div className="hidden md:flex space-x-4">
             {menuItems.map((item) => (
               <NavLink
                 key={item.name}
                 to={item.path}
                 className={({ isActive }) =>
-                  `${linkClass} ${isActive ? activeClass : inactiveClass}`
+                  `${linkClass} ${
+                    isActive ? activeClass : inactiveClass
+                  }`
                 }
               >
                 {item.name}
@@ -66,15 +88,15 @@ export default function Navbar() {
             ))}
           </div>
 
+          {/* RIGHT SIDE */}
           <div className="flex items-center gap-4">
 
-            {/* Hidden File Input */}
             <input
               type="file"
               accept=".csv"
               ref={fileInputRef}
               onChange={handleFileChange}
-              style={{ display: "none" }}
+              className="hidden"
             />
 
             <button
@@ -84,11 +106,14 @@ export default function Navbar() {
               Import CSV
             </button>
 
-            <button className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200">
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200"
+            >
               Logout
             </button>
-          </div>
 
+          </div>
         </div>
       </div>
     </nav>
