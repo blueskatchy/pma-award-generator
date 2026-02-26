@@ -8,7 +8,6 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
   const [showAllModal, setShowAllModal] = useState(null);
 
   const shouldShowButton = (sectionTitle) => {
-
     if (pageName === "plaque" || pageName === "streamer") {
       return true;
     }
@@ -37,28 +36,28 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
   };
 
   const handleExportPDF = () => {
-  exportOfficialPDF({
-    pageTitle,
-    sections,
-    fileName: pageName,
-  });
-};
+    exportOfficialPDF({
+      pageTitle,
+      sections,
+      fileName: pageName,
+    });
+  };
 
   return (
-       <div className="bg-surface p-7 md:p-16 w-full min-h-screen page-transition">
+    <div className="bg-surface p-7 md:p-16 w-full min-h-screen page-transition">
 
       <div className="flex justify-between items-center mb-6">
-  <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
-    {pageTitle}
-  </h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
+          {pageTitle}
+        </h1>
 
-<button
-  onClick={handleExportPDF}
-  className="text-gray-600 hover:text-gray-900 underline font-semibold transition"
->
-  Export PDF
-</button>
-</div>
+        <button
+          onClick={handleExportPDF}
+          className="text-gray-600 hover:text-gray-900 underline font-semibold transition"
+        >
+          Export PDF
+        </button>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {sections.map((section, index) => (
@@ -68,6 +67,7 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
               data={section.data}
               showButton={shouldShowButton(section.title)}
               onSeeMore={handleSeeMore}
+              titleExtra={section.titleExtra}
             />
           </div>
         ))}
@@ -134,10 +134,7 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
               </div>
 
               <div className="mt-6 flex justify-end">
-                <button
-                  onClick={closeModals}
-                >
-                </button>
+                <button onClick={closeModals}></button>
               </div>
 
             </div>
