@@ -1,38 +1,31 @@
+// SaberAPI.js
 const express = require("express");
 const router = express.Router();
 const db = require("./db");
 
-
 router.get("/saber-awards", (req, res) => {
   const query = `
-    SELECT afpsn, lname, fname,
-      SUM(crsegrade * cunits) / NULLIF(SUM(cunits),0) AS cgpa
-    FROM sample
-    GROUP BY afpsn, lname, fname
-  `;
+  SELECT afpsn, lname, fname, mname,
+    SUM(crsegrade * cunits) / NULLIF(SUM(cunits), 0) AS cgpa
+  FROM sample
+  GROUP BY afpsn
+  ORDER BY cgpa DESC
+  LIMIT 3
+`;
 
   db.query(query, (err, results) => {
     if (err) return res.status(500).json({ error: err.message });
 
-    const students = [];
-
-    results.forEach(student => {
-      const cgpa = parseFloat(student.cgpa);
-      if (!cgpa || isNaN(cgpa)) return;
-
-      students.push({
-        afpsn: student.afpsn,
-        name: `${student.lname}, ${student.fname}`,
-        cgpa: parseFloat(cgpa.toFixed(3))
-      });
+    const format = (student, rank) => ({
+      rank,
+      name: `${student.lname}, ${student.fname} ${student.mname ? student.mname.charAt(0) + "." : ""}`.trim(),
+      grade: parseFloat(student.cgpa.toFixed(3))
     });
 
-    students.sort((a, b) => b.cgpa - a.cgpa);
-
     res.json({
-      president: students[0] || null,
-      vicePresident: students[1] || null,
-      secretaryDefense: students[2] || null
+      presidential: results[0] ? format(results[0], 1) : null,
+      vicePresidential: results[1] ? format(results[1], 2) : null,
+      secretaryNationalDefense: results[2] ? format(results[2], 3) : null,
     });
   });
 });

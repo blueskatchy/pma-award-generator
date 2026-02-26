@@ -3,8 +3,7 @@ const cors = require("cors");
 
 const importCSV = require("./importcsvAPI");
 const latinAPI = require("./LatinAPI");
-const SaberAPI = require("./SaberAPI");
-
+const saberAPI = require("./SaberAPI");
 const app = express();
 
 app.use(cors());
@@ -12,7 +11,7 @@ app.use(express.json());
 
 app.use("/api", importCSV);
 app.use("/api", latinAPI);
-app.use("/api", SaberAPI); 
+app.use("/api", saberAPI); 
 
 app.get("/", (req, res) => res.json({ message: "Server running" }));
 

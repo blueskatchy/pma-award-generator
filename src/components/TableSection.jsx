@@ -15,7 +15,7 @@ const TableSection = ({ title, data = [], showButton = false, onSeeMore, titleEx
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg shadow-md p-4 min-h-[200px]">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center">
           <h2 className="text-xl font-bold tracking-wide text-gray-800">
