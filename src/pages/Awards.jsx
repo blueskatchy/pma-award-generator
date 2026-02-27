@@ -4,6 +4,18 @@ import TableLayout from "../components/TableLayout";
 const Awards = () => {
   const sections = [
     {
+      title: "PHYSICAL PROFICENCY AWARD",
+      data: [],
+    },
+    {
+      title: "STRONGEST CADET AWARD",
+      data: [],
+    },
+    {
+      title: "COURSE EXCELLENCE AWARD",
+      data: [],
+    },
+    {
       title: "DISTNGUISHED CADET (STARMAN)",
       data: [],
     },
@@ -34,7 +46,9 @@ const Awards = () => {
      {
       title: "TACTICS GROUP AWARD",
       data: [],
-    },
+    }, 
+    
+
   ];
 
   return (
