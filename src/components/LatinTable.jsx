@@ -24,9 +24,9 @@ const LatinTable = ({ title, data }) => {
                   {student.rank}
                 </td>
 
-                <td className="text-center py-4 font-medium">
-                  {student.name}
-                </td>
+                <td className="text-center py-3 text-sm">
+  {student.name}
+</td> 
 
                 <td className="text-center py-4">
                   {student.grade}
