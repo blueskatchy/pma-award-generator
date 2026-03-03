@@ -1,4 +1,3 @@
-// importcsvAPI.js
 const express = require("express");
 const multer = require("multer");
 const csv = require("csv-parser");
@@ -6,79 +5,112 @@ const fs = require("fs");
 const router = express.Router();
 const db = require("./db");
 
-// Ensure uploads folder exists
-const upload = multer({ dest: "uploads/" });
+if (!fs.existsSync("uploads")) fs.mkdirSync("uploads");
+
+const upload = multer({
+  dest: "uploads/",
+  limits: { fileSize: 200 * 1024 * 1024 }
+});
+
+const BATCH_SIZE = 500;
 
 router.post("/import-csv", upload.single("file"), (req, res) => {
   if (!req.file) return res.status(400).json({ message: "No file uploaded" });
 
-  const results = [];
-  let insertCount = 0;
-  let updateCount = 0;
-  let errorCount = 0;
+  let batch = [];
+  let inserted = 0;
+  let errors = 0;
 
-  fs.createReadStream(req.file.path)
-    .pipe(csv())
-    .on("data", row => results.push(row))
-    .on("end", () => {
-      const processRow = (index) => {
-        if (index >= results.length) {
-          fs.unlinkSync(req.file.path);
-          return res.json({
-            message: "CSV import completed",
-            totalRows: results.length,
-            inserted: insertCount,
-            updated: updateCount,
-            errors: errorCount
-          });
-        }
+  const stream = fs
+    .createReadStream(req.file.path)
+    .pipe(csv({ mapHeaders: ({ header }) => header.trim().toLowerCase() }));
 
-        const row = results[index];
-        const data = {
-          afpsn: row.afpsn || row.i_afpsn,
-          lname: row.lname || row.lastname,
-          fname: row.fname || row.firstname,
-          mname: row.mname || row.middlename,
-          cunits: row.cunits || row.units,
-          crsegrade: row.crsegrade || row.grade
-        };
+  function insertBatch(batchData, callback) {
+    if (batchData.length === 0) return callback();
 
-        if (!data.afpsn) {
-          errorCount++;
-          return processRow(index + 1);
-        }
+    const sql = `
+      INSERT INTO sample
+      (afpsn,lname,fname,mname,initls,coy,servid,oyrgr,class,term,acadyr,cunits,crsegrade,cname,ccode,ctype,cdesc)
+      VALUES ?
+      ON DUPLICATE KEY UPDATE
+        lname=VALUES(lname),
+        fname=VALUES(fname),
+        mname=VALUES(mname),
+        initls=VALUES(initls),
+        coy=VALUES(coy),
+        servid=VALUES(servid),
+        oyrgr=VALUES(oyrgr),
+        class=VALUES(class),
+        term=VALUES(term),
+        acadyr=VALUES(acadyr),
+        cunits=VALUES(cunits),
+        crsegrade=VALUES(crsegrade),
+        cname=VALUES(cname),
+        ccode=VALUES(ccode),
+        ctype=VALUES(ctype),
+        cdesc=VALUES(cdesc)
+    `;
 
-        db.query("SELECT afpsn FROM sample WHERE afpsn = ?", [data.afpsn], (err, existing) => {
-          if (err) { errorCount++; return processRow(index + 1); }
-
-          if (existing.length > 0) {
-            db.query("UPDATE sample SET ? WHERE afpsn = ?", [data, data.afpsn], (err) => {
-              if (err) errorCount++; else updateCount++;
-              processRow(index + 1);
-            });
-          } else {
-            db.query("INSERT INTO sample SET ?", data, (err) => {
-              if (err) errorCount++; else insertCount++;
-              processRow(index + 1);
-            });
-          }
-        });
-      };
-
-      processRow(0);
-    })
-    .on("error", err => {
-      console.error("CSV error:", err);
-      fs.unlinkSync(req.file.path);
-      res.status(500).json({ message: "CSV processing failed" });
+    db.query(sql, [batchData], (err, result) => {
+      if (err) {
+        console.error("BATCH INSERT ERROR:", err.sqlMessage);
+        errors += batchData.length;
+      } else {
+        inserted += result.affectedRows;
+      }
+      callback();
     });
-});
+  }
 
-// Optional: Get all records
-router.get("/sample", (req, res) => {
-  db.query("SELECT * FROM sample", (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
+  stream.on("data", (row) => {
+    const values = [
+      row.afpsn,
+      row.lname,
+      row.fname,
+      row.mname,
+      row.initls,
+      row.coy,
+      row.servid,
+      row.oyrgr,
+      row.class,
+      row.term,
+      row.acadyr,
+      row.cunits,
+      row.crsegrade,
+      row.cname,
+      row.ccode,
+      row.ctype,
+      row.cdesc
+    ];
+
+    if (!row.afpsn) return;
+
+    batch.push(values);
+
+    if (batch.length >= BATCH_SIZE) {
+      stream.pause();
+      insertBatch(batch, () => {
+        batch = [];
+        stream.resume();
+      });
+    }
+  });
+
+  stream.on("end", () => {
+    insertBatch(batch, () => {
+      fs.unlinkSync(req.file.path);
+      res.json({
+        message: "CSV import completed",
+        inserted,
+        errors
+      });
+    });
+  });
+
+  stream.on("error", (err) => {
+    console.error("CSV error:", err);
+    fs.unlinkSync(req.file.path);
+    res.status(500).json({ message: "CSV processing failed" });
   });
 });
 

@@ -16,7 +16,7 @@ export default function Navbar() {
     "text-white hover:text-yellow-300";
 
   const menuItems = [
-    { name: "Home", path: "/" }, // ✅ FIXED
+    { name: "Home", path: "/" }, 
     { name: "Latin", path: "/latin" },
     { name: "Saber", path: "/saber" },
     { name: "Awards", path: "/awards" },
@@ -67,7 +67,7 @@ export default function Navbar() {
             <img
               src={logo}
               alt="Logo"
-              className="h-10 w-auto"
+              className="h-15 w-auto"
             />
           </NavLink>
 

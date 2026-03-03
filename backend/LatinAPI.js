@@ -1,4 +1,4 @@
-// LatinAPI.js
+// LatinAPI.js fix logic in average
 const express = require("express");
 const router = express.Router();
 const db = require("./db");

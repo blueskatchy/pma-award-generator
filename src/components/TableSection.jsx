@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-const TableSection = ({ title, data = [], showButton = false, onSeeMore }) => {
+const TableSection = ({ title, data = [], showButton = false, onSeeMore, titleExtra }) => {
   const navigate = useNavigate();
 
   const handleSeeMoreClick = (e) => {
@@ -15,11 +15,14 @@ const TableSection = ({ title, data = [], showButton = false, onSeeMore }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4">
+    <div className="bg-white rounded-lg shadow-md p-4 min-h-[200px]">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold tracking-wide text-gray-800">
-          {title}
-        </h2>
+        <div className="flex items-center">
+          <h2 className="text-xl font-bold tracking-wide text-gray-800">
+            {title}
+          </h2>
+          {titleExtra && titleExtra}
+        </div>
         {showButton && (
           <button
             onClick={handleSeeMoreClick}
