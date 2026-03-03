@@ -16,12 +16,13 @@ export default function Navbar() {
     "text-white hover:text-yellow-300";
 
   const menuItems = [
-    { name: "Home", path: "/" }, 
+    { name: "Honorary", path: "/" }, 
     { name: "Latin", path: "/latin" },
     { name: "Saber", path: "/saber" },
     { name: "Awards", path: "/awards" },
     { name: "Plaque", path: "/plaque" },
     { name: "Streamer", path: "/streamer" },
+    { name: "Users", path: "/add-user" },
   ];
 
   const handleImportClick = () => {

@@ -8,6 +8,7 @@ import Awards from "./pages/Awards";
 import Plaque from "./pages/Plaque";
 import Streamer from "./pages/Streamer";
 import Login from "./pages/Login";
+import AddUser from "./pages/AddUser";
 import IdleTimer from "./components/IdleTimer";
 
 function ScrollToTop() {
@@ -45,6 +46,7 @@ function MainLayout() {
 function App() {
   return (
     <Router>
+      <ScrollToTop /> 
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route
@@ -60,8 +62,8 @@ function App() {
           <Route path="/awards" element={<Awards />} />
           <Route path="/plaque" element={<Plaque />} />
           <Route path="/streamer" element={<Streamer />} />
+          <Route path="/add-user" element={<AddUser />} />
         </Route>
-
       </Routes>
     </Router>
   );
