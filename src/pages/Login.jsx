@@ -60,7 +60,7 @@ export default function Login() {
         <div className="w-full max-w-md">
 
           <div className="flex justify-center mb-6">
-            <img src={logo} alt="Logo" className="h-35" />
+            <img src={logo} alt="Logo" className="h-20" />
           </div>
 
           <h1 className="text-3xl font-bold text-center mb-8">

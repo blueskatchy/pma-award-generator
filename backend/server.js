@@ -4,18 +4,49 @@ const cors = require("cors");
 const importCSV = require("./importcsvAPI");
 const latinAPI = require("./LatinAPI");
 const saberAPI = require("./SaberAPI");
-const authAPI = require("./authAPI"); 
+const userAPI = require("./userAPI");
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
+console.log("Registering routes...");
+
 
 app.use("/api", importCSV);
 app.use("/api", latinAPI);
 app.use("/api", saberAPI);
-app.use("/api", authAPI); 
+app.use("/api", userAPI);
 
 app.get("/", (req, res) => res.json({ message: "Server running" }));
 
-app.listen(3001, () => console.log("Server running on port 3001"));
+
+app.get("/api/routes", (req, res) => {
+    const routes = [];
+    app._router.stack.forEach(function(r){
+        if (r.route && r.route.path){
+            routes.push({
+                path: r.route.path,
+                methods: Object.keys(r.route.methods)
+            });
+        } else if (r.name === 'router' && r.handle.stack) {
+            r.handle.stack.forEach(function(handler){
+                if (handler.route) {
+                    routes.push({
+                        path: '/api' + handler.route.path,
+                        methods: Object.keys(handler.route.methods)
+                    });
+                }
+            });
+        }
+    });
+    res.json(routes);
+});
+
+const PORT = 3001;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+    console.log(`Test all routes: http://localhost:${PORT}/api/routes`);
+    console.log(`Users endpoint: http://localhost:${PORT}/api/users`);
+});
