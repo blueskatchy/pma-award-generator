@@ -1,4 +1,3 @@
-// LatinAPI.js fix logic in average
 const express = require("express");
 const router = express.Router();
 const db = require("./db");
@@ -22,7 +21,7 @@ router.get("/latin-honors", (req, res) => {
     results.forEach(student => {
       const cgpa = parseFloat(student.cgpa);
       const minGrade = parseFloat(student.min_grade);
-      if (!cgpa || isNaN(cgpa)) return;
+      if (isNaN(cgpa) || isNaN(minGrade)) return;
 
       const studentData = {
         afpsn: student.afpsn,
@@ -31,15 +30,27 @@ router.get("/latin-honors", (req, res) => {
       };
 
       if (cgpa >= 9.3 && minGrade >= 8.5) summa.push(studentData);
-      else if (cgpa >= 8.9 && minGrade >= 8.25) magna.push(studentData);
-      else if (cgpa >= 8.5 && minGrade >= 8.0) cum.push(studentData);
+      else if (cgpa >= 8.9 && cgpa < 9.3 && minGrade >= 8.25) magna.push(studentData);
+      else if (cgpa >= 8.5 && cgpa < 8.9 && minGrade >= 8.0) cum.push(studentData);
     });
 
+    const sortByCGPA = arr => arr.sort((a, b) => b.cgpa - a.cgpa);
+
     res.json({
-      summaCumLaude: summa,
-      magnaCumLaude: magna,
-      cumLaude: cum
+      summaCumLaude: sortByCGPA(summa),
+      magnaCumLaude: sortByCGPA(magna),
+      cumLaude: sortByCGPA(cum)
     });
+  });
+});
+
+router.get("/graduation-years", (req, res) => {
+  const query = `SELECT DISTINCT oyrgr FROM sample ORDER BY oyrgr DESC`;
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    const years = results.map(row => row.oyrgr);
+    res.json(years);
   });
 });
 
