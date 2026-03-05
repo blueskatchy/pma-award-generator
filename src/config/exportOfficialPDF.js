@@ -2,11 +2,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import logo from "../assets/pma_logoicon.png";
 
-const exportOfficialPDF = ({
-  pageTitle,
-  sections,
-  fileName,
-}) => {
+const exportOfficialPDF = ({ pageTitle, sections, fileName }) => {
   const doc = new jsPDF("p", "mm", "a4");
 
   const pageWidth = doc.internal.pageSize.getWidth();
@@ -14,23 +10,26 @@ const exportOfficialPDF = ({
 
   const leftMargin = 14;
   const headerTextX = 45;
-
   let yPosition = 60;
+
+  const cleanText = (text) => {
+    return text.replace(/\s+/g, " ").trim();
+  };
 
   const drawHeader = () => {
     doc.addImage(logo, "PNG", leftMargin, 15, 22, 22);
 
     doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
+    doc.setTextColor(0);
     doc.text("Philippine Military Academy", headerTextX, 24);
 
     doc.setFontSize(12);
-    doc.setTextColor(40, 40, 40);
+    doc.setTextColor(40);
     doc.text(pageTitle, headerTextX, 32);
 
     const today = new Date().toLocaleDateString();
     doc.setFontSize(9);
-    doc.setTextColor(120, 120, 120);
+    doc.setTextColor(120);
     doc.text(`Generated on: ${today}`, headerTextX, 40);
 
     doc.setDrawColor(0, 51, 102);
@@ -40,71 +39,65 @@ const exportOfficialPDF = ({
     yPosition = 60;
   };
 
-  const drawPageNumber = (pageNum, totalPages) => {
-    doc.setFontSize(9);
-    doc.setTextColor(120, 120, 120);
-    doc.text(
-      `Page ${pageNum} of ${totalPages}`,
-      pageWidth / 2,
-      pageHeight - 10,
-      { align: "center" }
-    );
-  };
-
   drawHeader();
-  let pageNumber = 1;
 
   sections.forEach((section) => {
     if (!section.data || section.data.length === 0) return;
 
-    if (yPosition > pageHeight - 30) {
+    if (yPosition > pageHeight - 40) {
       doc.addPage();
-      pageNumber++;
       drawHeader();
     }
 
-    doc.setFontSize(11);
-    doc.setTextColor(0, 0, 0);
-    doc.text(section.title, leftMargin, yPosition);
+    doc.setFontSize(13);
+    doc.setFont(undefined, "bold");
+    doc.text(section.title.toUpperCase(), leftMargin, yPosition);
+    doc.setFont(undefined, "normal");
     yPosition += 6;
 
     autoTable(doc, {
       startY: yPosition,
+
       head: [["Rank", "Name", "Grade"]],
+
       body: section.data.map((item) => [
         item.rank,
-        item.name,
-        item.grade,
+        cleanText(item.name).toUpperCase(), // ✅ whitespace cleaned here
+        Number(item.grade).toFixed(3),
       ]),
-      theme: "striped",
+
+      theme: "grid",
+
       styles: {
-        fontSize: 9,
+        fontSize: 10,
         cellPadding: 3,
-        cellWidth: 'auto',
+        valign: "middle",
       },
+
       headStyles: {
-        fillColor: [80, 80, 80],
+        fillColor: [50, 50, 50],
         textColor: 255,
-        halign: 'center',
-        fontStyle: 'bold',
+        halign: "center",
+        fontStyle: "bold",
       },
+
       columnStyles: {
-        0: { halign: 'center', cellWidth: 25 }, 
-        1: { halign: 'center', cellWidth: 'auto' },
-        2: { halign: 'center', cellWidth: 25 }, 
+        0: { halign: "center", cellWidth: 25 },
+        1: { halign: "left", cellWidth: 120 },
+        2: { halign: "center", cellWidth: 30 },
       },
+
       alternateRowStyles: {
         fillColor: [245, 245, 245],
       },
+
       margin: { left: leftMargin, right: leftMargin },
-      
+
       didDrawPage: (data) => {
         doc.setFontSize(9);
-        doc.setTextColor(120, 120, 120);
-        
-        const totalPages = doc.getNumberOfPages();
+        doc.setTextColor(120);
         doc.text(
-          `Page ${data.pageNumber} of ${totalPages}`,
+          `Page ${data.pageNumber} of ${doc.getNumberOfPages()}`,
           pageWidth / 2,
           pageHeight - 10,
           { align: "center" }
@@ -114,23 +107,6 @@ const exportOfficialPDF = ({
 
     yPosition = doc.lastAutoTable.finalY + 12;
   });
-
-  const totalPages = doc.getNumberOfPages();
-  for (let i = 1; i <= totalPages; i++) {
-    doc.setPage(i);
-    
-    doc.setFillColor(255, 255, 255);
-    doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
-    
-    doc.setFontSize(9);
-    doc.setTextColor(120, 120, 120);
-    doc.text(
-      `Page ${i} of ${totalPages}`,
-      pageWidth / 2,
-      pageHeight - 10,
-      { align: "center" }
-    );
-  }
 
   doc.save(`${fileName}.pdf`);
 };

@@ -4,11 +4,13 @@ const db = require("./db");
 
 router.get("/latin-honors", (req, res) => {
   const query = `
-    SELECT afpsn, lname, fname,
+    SELECT 
+      afpsn,
+      TRIM(CONCAT(lname, ', ', fname, ' ', COALESCE(mname, ''))) AS name,
       SUM(crsegrade * cunits) / NULLIF(SUM(cunits),0) AS cgpa,
       MIN(crsegrade) AS min_grade
     FROM sample
-    GROUP BY afpsn, lname, fname
+    GROUP BY afpsn, lname, fname, mname
   `;
 
   db.query(query, (err, results) => {
@@ -23,9 +25,10 @@ router.get("/latin-honors", (req, res) => {
       const minGrade = parseFloat(student.min_grade);
       if (isNaN(cgpa) || isNaN(minGrade)) return;
 
+      // ✅ USE name FROM SQL
       const studentData = {
         afpsn: student.afpsn,
-        name: `${student.lname}, ${student.fname}`,
+        name: student.name.toUpperCase(),
         cgpa: parseFloat(cgpa.toFixed(3))
       };
 
