@@ -5,7 +5,7 @@ const importCSV = require("./importcsvAPI");
 const latinAPI = require("./LatinAPI");
 const saberAPI = require("./SaberAPI");
 const userAPI = require("./userAPI");
-
+const awardsAPI = require("./AwardsAPI");
 const app = express();
 
 app.use(cors());
@@ -18,6 +18,7 @@ app.use("/api", importCSV);
 app.use("/api", latinAPI);
 app.use("/api", saberAPI);
 app.use("/api", userAPI);
+app.use("/api", awardsAPI);
 
 app.get("/", (req, res) => res.json({ message: "Server running" }));
 
@@ -47,6 +48,4 @@ app.get("/api/routes", (req, res) => {
 const PORT = 3001;
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Test all routes: http://localhost:${PORT}/api/routes`);
-    console.log(`Users endpoint: http://localhost:${PORT}/api/users`);
 });
