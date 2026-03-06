@@ -1,5 +1,5 @@
 export const tablesWithButtons = {
-  plaque: true,
+  plaque: false,
    
   streamer: true, 
   
@@ -19,4 +19,6 @@ export const tablesWithButtons = {
     "STRONGEST CADET AWARD",
     "COURSE EXCELLENCE AWARD"
   ]
+
+  
 };

@@ -8,7 +8,7 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
   const [showAllModal, setShowAllModal] = useState(null);
 
   const shouldShowButton = (sectionTitle) => {
-    if (pageName === "plaque" || pageName === "streamer") {
+    if (pageName === "streamer") {
       return true;
     }
 

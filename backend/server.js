@@ -6,6 +6,7 @@ const latinAPI = require("./LatinAPI");
 const saberAPI = require("./SaberAPI");
 const userAPI = require("./userAPI");
 const awardsAPI = require("./AwardsAPI");
+const plaqueAPI = require("./PlaqueAPI")
 const app = express();
 
 app.use(cors());
@@ -19,6 +20,7 @@ app.use("/api", latinAPI);
 app.use("/api", saberAPI);
 app.use("/api", userAPI);
 app.use("/api", awardsAPI);
+app.use("/api", plaqueAPI);
 
 app.get("/", (req, res) => res.json({ message: "Server running" }));
 
