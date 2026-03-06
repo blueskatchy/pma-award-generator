@@ -25,7 +25,6 @@ router.get("/latin-honors", (req, res) => {
       const minGrade = parseFloat(student.min_grade);
       if (isNaN(cgpa) || isNaN(minGrade)) return;
 
-      // ✅ USE name FROM SQL
       const studentData = {
         afpsn: student.afpsn,
         name: student.name.toUpperCase(),

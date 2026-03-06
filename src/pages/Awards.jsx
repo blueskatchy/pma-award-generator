@@ -3,45 +3,66 @@ import TableLayout from "../components/TableLayout";
 import exportOfficialPDF from "../config/exportOfficialPDF";
 
 const Awards = () => {
-  // State for each award (currently only Strongest Cadet)
   const [strongestCadet, setStrongestCadet] = useState([]);
+  const [agfoAward, setAgfoAward] = useState([]);
+  const [genAntLuna, setGenAntLuna] = useState([]);
+  const [journalismAward, setJournalismAward] = useState([]);
 
   useEffect(() => {
-    // Fetch Strongest Cadet
     fetch("http://localhost:3001/api/awards")
       .then(res => res.json())
       .then(data => {
-        // Wrap single object in array if exists
         const cadetArray = data.strongestCadet ? [data.strongestCadet] : [];
+        const agfoArray = data.agfoAward ? [data.agfoAward] : [];
+        const genAntArray = data.genAntLuna ? [data.genAntLuna] : [];
+        const journalismArray = data.journalismAward ? [data.journalismAward] : [];
 
-        // Format rank and grade
-        const formatted = cadetArray.map((s, index) => ({
+        const formattedStrongest = cadetArray.map((s, index) => ({
           rank: index + 1,
           name: s.name,
-          grade: s.cgpa.toFixed(3)
+          grade: Number(s.cgpa).toFixed(3)
         }));
 
-        setStrongestCadet(formatted);
+        const formattedAgfo = agfoArray.map((s, index) => ({
+          rank: index + 1,
+          name: s.name,
+          grade: Number(s.cgpa).toFixed(3)
+        }));
+
+        const formattedGenAnt = genAntArray.map((s, index) => ({
+          rank: index + 1,
+          name: s.name,
+          grade: Number(s.cgpa).toFixed(3)
+        }));
+
+        const formattedJournal = journalismArray.map((s, index) => ({
+          rank: index + 1,
+          name: s.name,
+          grade: Number(s.cgpa).toFixed(3)
+        }));
+
+        setStrongestCadet(formattedStrongest);
+        setAgfoAward(formattedAgfo);
+        setGenAntLuna(formattedGenAnt);
+        setJournalismAward(formattedJournal);
       })
       .catch(error => console.error("Error fetching awards:", error));
   }, []);
 
-  // Define all award sections
   const sections = [
     { title: "PHYSICAL PROFICENCY AWARD", data: [] },
     { title: "STRONGEST CADET AWARD", data: strongestCadet },
     { title: "COURSE EXCELLENCE AWARD", data: [] },
     { title: "DISTINGUISHED CADET (STARMAN)", data: [] },
-    { title: "AGFO, INC", data: [] },
-    { title: "GEN. ANTONIO LUNA", data: [] },
+    { title: "AGFO, INC", data: agfoAward },
+    { title: "GEN. ANTONIO LUNA", data: genAntLuna },
     { title: "JUSMAG", data: [] },
-    { title: "JOURNALISM", data: [] },
+    { title: "JOURNALISM", data: journalismAward },
     { title: "SPANISH ARMED FORCES", data: [] },
     { title: "ACADEMIC GROUP AWARD", data: [] },
     { title: "TACTICS GROUP AWARD", data: [] }
   ];
 
-  // Export PDF handler
   const handleExportPDF = () => {
     exportOfficialPDF({
       pageTitle: "Awards",
