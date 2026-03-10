@@ -10,6 +10,7 @@ router.get("/latin-honors", (req, res) => {
       SUM(crsegrade * cunits) / NULLIF(SUM(cunits),0) AS cgpa,
       MIN(crsegrade) AS min_grade
     FROM sample
+    WHERE dept_code <> 'DTO'
     GROUP BY afpsn, lname, fname, mname
   `;
 
