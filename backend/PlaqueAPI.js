@@ -95,16 +95,17 @@ router.get("/plaque", async (req, res) => {
       LIMIT 1
     `;
 
-        const armyPlqQuery = `
+    const armyPlqQuery = `
       SELECT afpsn, lname, fname, mname,
       SUM(crsegrade * cunits)/NULLIF(SUM(cunits),0) AS cgpa
       FROM sample
       WHERE dept_code = 'DGW'
       AND ccode LIKE 'R%'
+      AND servid = 'R'
       GROUP BY afpsn, lname, fname, mname
       ORDER BY cgpa DESC
       LIMIT 1
-    `;
+  `;
 
     const navyPlqQuery = `
       SELECT afpsn, lname, fname, mname,
@@ -112,10 +113,11 @@ router.get("/plaque", async (req, res) => {
       FROM sample
       WHERE dept_code = 'DNW'
       AND ccode LIKE 'V%'
+      AND servid = 'V'
       GROUP BY afpsn, lname, fname, mname
       ORDER BY cgpa DESC
       LIMIT 1
-    `;
+  `;
 
     const airforcePlqQuery = `
       SELECT afpsn, lname, fname, mname,
@@ -123,10 +125,11 @@ router.get("/plaque", async (req, res) => {
       FROM sample
       WHERE dept_code = 'DAW'
       AND ccode LIKE 'F%'
+      AND servid = 'F'
       GROUP BY afpsn, lname, fname, mname
       ORDER BY cgpa DESC
       LIMIT 1
-    `;
+  `;
 
     const leadershipPlqQuery = `
       SELECT afpsn, lname, fname, mname,
