@@ -7,6 +7,7 @@ const saberAPI = require("./SaberAPI");
 const userAPI = require("./userAPI");
 const awardsAPI = require("./AwardsAPI");
 const plaqueAPI = require("./PlaqueAPI")
+const streamerAPI = require("./StreamerAPI");
 const app = express();
 
 app.use(cors());
@@ -21,6 +22,7 @@ app.use("/api", saberAPI);
 app.use("/api", userAPI);
 app.use("/api", awardsAPI);
 app.use("/api", plaqueAPI);
+app.use("/api", streamerAPI);
 
 app.get("/", (req, res) => res.json({ message: "Server running" }));
 

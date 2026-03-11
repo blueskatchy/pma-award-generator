@@ -1,51 +1,31 @@
 import React, { useState } from "react";
 import TableSection from "./TableSection";
-import { tablesWithButtons } from "../config/tableButtons";
 import exportOfficialPDF from "../config/exportOfficialPDF";
 
 const TableLayout = ({ pageTitle, sections, pageName }) => {
-  const [selectedSection, setSelectedSection] = useState(null);
   const [showAllModal, setShowAllModal] = useState(null);
 
-  const shouldShowButton = (sectionTitle) => {
-    if (pageName === "streamer") {
-      return true;
-    }
-
-    const pageButtons = tablesWithButtons[pageName];
-    
-    if (Array.isArray(pageButtons)) {
-      return pageButtons.includes(sectionTitle);
-    }
-    
-    return false;
+  const handleSeeMore = (title, fullData) => {
+    setShowAllModal({ title, data: fullData });
   };
 
-  const handleSeeMore = (title, data) => {
-    if (shouldShowButton(title)) {
-      setShowAllModal({
-        title,
-        data: data
-      });
-    }
-  };
-
-  const closeModals = () => {
-    setSelectedSection(null);
-    setShowAllModal(null);
-  };
+  const closeModals = () => setShowAllModal(null);
 
   const handleExportPDF = () => {
+    const sectionsWithFullData = sections.map((section) => ({
+      ...section,
+      data: section.fullData || section.data,
+    }));
+
     exportOfficialPDF({
       pageTitle,
-      sections,
+      sections: sectionsWithFullData,
       fileName: pageName,
     });
   };
 
   return (
     <div className="bg-surface p-7 md:p-16 w-full min-h-screen page-transition">
-
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
           {pageTitle}
@@ -64,25 +44,24 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
           <div key={index}>
             <TableSection
               title={section.title}
-              data={section.data}
-              showButton={shouldShowButton(section.title)}
-              onSeeMore={handleSeeMore}
+              data={section.data}         
               titleExtra={section.titleExtra}
+              showButton={!!section.fullData && section.fullData.length > 1}
+              onSeeMore={() => handleSeeMore(section.title, section.fullData)}
             />
           </div>
         ))}
       </div>
 
-      {showAllModal && shouldShowButton(showAllModal.title) && (
+      {showAllModal && (
         <>
-          <div 
+          <div
             className="fixed inset-0 bg-black/50 z-40"
             onClick={closeModals}
           ></div>
-          
+
           <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none">
             <div className="bg-white rounded-lg p-8 max-w-5xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto shadow-2xl">
-              
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-gray-800">
                   {showAllModal.title}
@@ -106,37 +85,30 @@ const TableLayout = ({ pageTitle, sections, pageName }) => {
                   </thead>
 
                   <tbody>
-                    {showAllModal.data.length > 0 ? (
-                      showAllModal.data.map((item, index) => (
-                        <tr key={index} className="hover border-b">
-                          <td className="text-center py-4 font-bold text-gray-700">
-                            #{item.rank}
-                          </td>
-                          <td className="text-center py-4 font-medium">
-                            {item.name}
-                          </td>
-                          <td className="text-center py-4">
-                            <span className="px-3 py-1 rounded-full text-sm">
-                              {item.grade}
-                            </span>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={4} className="text-center py-8 text-gray-400">
-                          No data available
+                  {showAllModal.data.length > 0 ? (
+                    showAllModal.data.map((item, index) => (
+                      <tr key={index} className="hover border-b">
+                        <td className="text-center py-4 font-bold text-gray-700">
+                          #{item.rank}
+                        </td>
+                        <td className="text-center py-4 font-medium">{item.name}</td>
+                        <td className="text-center py-4">
+                          <span className="px-3 py-1 rounded-full text-sm">
+                            {item.grade}
+                          </span>
                         </td>
                       </tr>
-                    )}
-                  </tbody>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan={3} className="text-center py-8 text-gray-400">
+                        No data available
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
                 </table>
               </div>
-
-              <div className="mt-6 flex justify-end">
-                <button onClick={closeModals}></button>
-              </div>
-
             </div>
           </div>
         </>
