@@ -93,8 +93,9 @@ const Streamer = () => {
   return (
     <TableLayout
       pageTitle="Streamer Group Awards"
-      pageName="streamer"
+      pageName="streamer" 
       sections={sections}
+      clickableNames={false}
     />
   );
 };

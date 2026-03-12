@@ -93,7 +93,9 @@ const Awards = () => {
     });
   };
 
+  
   return (
+    
     <div className="bg-surface p-7 md:p-16 w-full min-h-screen">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl md:text-3xl font-bold text-gray-700">
@@ -108,11 +110,12 @@ const Awards = () => {
         </button>
       </div>
 
-      <TableLayout
-        pageTitle="Awards"
-        pageName="awards"
-        sections={sections}
-      />
+      <TableLayout 
+      pageTitle="Awards"
+      pageName="saber"
+      sections={sections}
+      clickableNames={true}
+    />
     </div>
   );
 };

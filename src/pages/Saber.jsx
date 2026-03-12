@@ -47,10 +47,11 @@ const Saber = () => {
   ];
 
   return (
-    <TableLayout
+    <TableLayout 
       pageTitle="Saber Awards"
       pageName="saber"
       sections={sections}
+      clickableNames={true}
     />
   );
 };

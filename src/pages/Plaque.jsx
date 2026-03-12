@@ -67,10 +67,11 @@ const Plaque = () => {
   ];
 
   return (
-    <TableLayout
+    <TableLayout 
       pageTitle="Plaque Awards"
-      pageName="plaque"
+      pageName="saber"
       sections={sections}
+      clickableNames={true}
     />
   );
 };
