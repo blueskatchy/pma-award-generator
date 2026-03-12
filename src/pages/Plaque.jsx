@@ -1,9 +1,7 @@
-// /src/pages/Plaque.jsx
 import React, { useEffect, useState } from "react";
 import TableLayout from "../components/TableLayout";
 
 const Plaque = () => {
-
   const [infoTech, setInfoTech] = useState([]);
   const [manage, setManage] = useState([]);
   const [math, setMath] = useState([]);
@@ -22,10 +20,9 @@ const Plaque = () => {
     fetch("http://localhost:3001/api/plaque")
       .then(res => res.json())
       .then(data => {
-
-        const formatData = (student) => {
-          const arr = student ? [student] : [];
-          return arr.map((s, i) => ({
+        const formatData = (students) => {
+          if (!students) return [];
+          return (Array.isArray(students) ? students : [students]).map((s, i) => ({
             rank: i + 1,
             name: s.name,
             grade: Number(s.cgpa).toFixed(3)
@@ -45,7 +42,6 @@ const Plaque = () => {
         setLeadership(formatData(data.leadershipPlq));
         setTactical(formatData(data.tacticalPlq));
         setSports(formatData(data.sportsPlq));
-
       })
       .catch(err => console.error("Error fetching plaque awards:", err));
   }, []);

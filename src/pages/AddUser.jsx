@@ -65,7 +65,6 @@ const AddUser = () => {
     setSuccessMessage("");
 
     try {
-      // API call to create user
       const response = await fetch("http://localhost:3001/api/users", {
         method: "POST",
         headers: {

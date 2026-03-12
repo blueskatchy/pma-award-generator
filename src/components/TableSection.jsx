@@ -5,7 +5,7 @@ const TableSection = ({
   title,
   data = [],
   showButton = false,
-  onSeeMore,
+  onSeeMore,  
   titleExtra,
   clickableNames = false
 }) => {
@@ -21,10 +21,18 @@ const TableSection = ({
     }
   };
 
-  const handleStudentClick = (student, e) => {
-    e.stopPropagation();
-    setSelectedStudent(student);
-  };
+ const handleStudentClick = async (student, e) => {
+  e.stopPropagation();
+  try {
+    const res = await fetch(`/api/students/${student.afpsn}/courses`);
+    const data = await res.json();
+
+    setSelectedStudent({ ...student, courses: data.courses });
+  } catch (err) {
+    console.error("Failed to fetch courses:", err);
+    setSelectedStudent({ ...student, courses: [] });
+  }
+};
 
   const closeModal = () => setSelectedStudent(null);
 
@@ -145,32 +153,27 @@ const TableSection = ({
                       ))
                     ) : (
                       <>
-                        <tr className="border-b hover:bg-gray-50">
-                          <td className="py-3 px-4">Information Systems</td>
-                          <td className="text-center py-3 px-4">3</td>
-                          <td className="text-center py-3 px-4 font-medium">9.9</td>
-                        </tr>
-                        <tr className="border-b hover:bg-gray-50">
-                          <td className="py-3 px-4">Mathematics</td>
-                          <td className="text-center py-3 px-4">3</td>
-                          <td className="text-center py-3 px-4 font-medium">9.8</td>
-                        </tr>
-                        <tr className="border-b hover:bg-gray-50">
-                          <td className="py-3 px-4">Leadership</td>
-                          <td className="text-center py-3 px-4">2</td>
-                          <td className="text-center py-3 px-4 font-medium">9.7</td>
-                        </tr>
                       </>
                     )}
                   </tbody>
-                  <tfoot>
-                    <tr className="bg-gray-50 font-semibold">
-                      <td colSpan={2} className="text-right py-3 px-4">GPA:</td>
-                      <td className="text-center py-3 px-4 text-blue-600">
-                        {calculateGPA(selectedStudent)}
-                      </td>
-                    </tr>
-                  </tfoot>
+                   {selectedStudent.courses &&
+                    selectedStudent.courses.length > 0 ? (
+                      selectedStudent.courses.map((course, idx) => (
+                        <tr key={idx} className="border-b hover:bg-gray-50">
+                          <td className="py-3 px-4">{course.name}</td>
+                          <td className="text-center py-3 px-4">{course.units}</td>
+                          <td className="text-center py-3 px-4 font-medium">
+                            {course.grade}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={3} className="text-center py-6 text-gray-400">
+                          No courses found
+                        </td>
+                      </tr>
+                    )}
                 </table>
               </div>
 

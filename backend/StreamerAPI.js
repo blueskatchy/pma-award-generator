@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("./db");
 
-// GET cadets by company
+
 router.get("/company/:coy", (req, res) => {
   const coy = req.params.coy;
 

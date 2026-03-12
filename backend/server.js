@@ -8,6 +8,7 @@ const userAPI = require("./userAPI");
 const awardsAPI = require("./AwardsAPI");
 const plaqueAPI = require("./PlaqueAPI")
 const streamerAPI = require("./StreamerAPI");
+const studentAPI = require("./studentAPI");
 const app = express();
 
 app.use(cors());
@@ -23,6 +24,7 @@ app.use("/api", userAPI);
 app.use("/api", awardsAPI);
 app.use("/api", plaqueAPI);
 app.use("/api", streamerAPI);
+app.use("/api", studentAPI);
 
 app.get("/", (req, res) => res.json({ message: "Server running" }));
 
